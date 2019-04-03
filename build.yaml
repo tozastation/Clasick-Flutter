@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      inject_generator:
+        generate_for:
+        - lib/interface/di/**.dart
+        - lib/interface/di/**.summary

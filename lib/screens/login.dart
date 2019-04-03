@@ -6,6 +6,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController userID = new TextEditingController();
+  TextEditingController userPass = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +24,7 @@ class _LoginState extends State<Login> {
               new Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: new TextFormField(
+                  controller: userID,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
                           borderSide: new BorderSide(color: Colors.teal)),
@@ -31,6 +35,7 @@ class _LoginState extends State<Login> {
               new Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: new TextFormField(
+                  controller: userPass,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
                           borderSide: new BorderSide(color: Colors.teal)),

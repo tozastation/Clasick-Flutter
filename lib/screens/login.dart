@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clasick_flutter/screens/home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   TextEditingController userID = new TextEditingController();
   TextEditingController userPass = new TextEditingController();
 
@@ -58,7 +60,12 @@ class _LoginState extends State<Login> {
                       ),
                       color: Colors.green,
                       shape: RoundedRectangleBorder(),
-                      onPressed: () {},
+                      onPressed: () {
+                        //Navigator.pushNamed(context, '/home');
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => Home()
+                        ));
+                      },
                     ),
                   )),
             ],

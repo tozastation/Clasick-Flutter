@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clasick_flutter/screens/sample.dart';
+import 'package:clasick_flutter/screens/playlist.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _HomeState extends State<Home> {
 
   int _currentIndex = 0;
   final List<Widget> _children = [
-    PlaceholderWidget(Colors.white),
+    Playlist(),
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green)
   ];

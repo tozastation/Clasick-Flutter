@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: _defaultHome,
+//      routes: <String, WidgetBuilder>{
+//        '/playlistDetail': (_) => PlaylistDetail(),
+//      },
     );
   }
 }

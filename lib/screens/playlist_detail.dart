@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:clasick_flutter/screens/play.dart';
 
+// ignore: must_be_immutable
 class PlaylistDetail extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -16,15 +18,15 @@ class PlaylistDetail extends StatefulWidget {
 
 class _PlaylistDetail extends State<PlaylistDetail> {
 
-  var musicTitles = [
+  final musicTitles = [
     "カノン", "ピアノソナタ第1番 第一楽章 月光"
   ];
 
-  var musicArtists = [
+  final musicArtists = [
     "パッヘルベル", "ベートーヴェン"
   ];
 
-  var musicIcons = [
+  final musicIcons = [
     "https://blog-001.west.edge.storage-yahoo.jp/res/blog-13-d1/suurin0522/folder/385823/03/5621903/img_0",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Beethoven.jpg/1200px-Beethoven.jpg"
   ];
@@ -48,7 +50,12 @@ class _PlaylistDetail extends State<PlaylistDetail> {
                 title: Text(musicTitles[index]),
                 subtitle: Text(musicArtists[index]),
                 onTap: () {
-                  /* react to the tile being tapped */
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Play(musicTitles[index], musicArtists[index]),
+                    ),
+                  );
                 },
               ));
         },

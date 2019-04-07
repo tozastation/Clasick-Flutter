@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:clasick_flutter/screens/login.dart';
 import 'package:clasick_flutter/screens/home.dart';
+import 'package:flutter/rendering.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  debugPaintSizeEnabled=false;
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

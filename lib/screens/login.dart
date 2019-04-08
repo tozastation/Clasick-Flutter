@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clasick_flutter/screens/home.dart';
+import 'package:clasick_flutter/screens/signup.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -7,7 +8,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   TextEditingController userID = new TextEditingController();
   TextEditingController userPass = new TextEditingController();
 
@@ -61,13 +61,32 @@ class _LoginState extends State<Login> {
                       color: Colors.green,
                       shape: RoundedRectangleBorder(),
                       onPressed: () {
-                        //Navigator.pushNamed(context, '/home');
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) => Home()
-                        ));
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Home()));
                       },
                     ),
                   )),
+              Container(
+                child: ButtonTheme(
+                  minWidth: 80.0,
+                  height: 40.0,
+                  child: new RaisedButton(
+                    child: const Text(
+                      'SignUp',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                    color: Colors.green,
+                    shape: RoundedRectangleBorder(),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SignUp()));
+                    },
+                  ),
+                ),
+              )
             ],
           )),
     );

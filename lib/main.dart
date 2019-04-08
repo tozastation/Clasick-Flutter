@@ -4,7 +4,7 @@ import 'package:clasick_flutter/screens/home.dart';
 import 'package:flutter/rendering.dart';
 
 void main() {
-  debugPaintSizeEnabled=false;
+  debugPaintSizeEnabled=true;
   runApp(MyApp());
 }
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget _defaultHome = Login();
 
-    bool _result = true;
+    bool _result = false;
     if (_result) {
       _defaultHome = new Home();
     }

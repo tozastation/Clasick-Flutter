@@ -1,30 +1,38 @@
 import "package:clasick_flutter/domain/repository/UserRepository.dart";
 import "package:clasick_flutter/interface/grpc/user_rpc.pbgrpc.dart";
-
-class MixInUserRepository {
-  final userRepository = new UserRepositoryImpl();
-}
+import "package:clasick_flutter/interface/grpc/UserClient.dart";
+import "package:clasick_flutter/domain/model/Login.dart";
+import "package:clasick_flutter/interface/kvs/KVSManager.dart";
 
 class UserRepositoryImpl implements UserRepository {
-  // Create Singleton Object
-  static UserRepositoryImpl _instance;
-
-  factory UserRepositoryImpl() {
-    if (_instance == null) _instance = new UserRepositoryImpl._internal();
-    return _instance;
-  }
-
-  UserRepositoryImpl._internal();
+  UserClient _stub;
+  KVSManager _kvs;
+  UserRepositoryImpl(this._stub, this._kvs);
 
   @override
-  ResponseSignIn signIn(RequestSignIn param) {
-    // TODO: implement signIn
-    return null;
+  Future<ResponseSignIn> signIn(RequestSignIn arg1) async {
+    return await _stub.client.signIn(arg1);
   }
 
   @override
-  ResponseSignUp signUp(RequestSignUp param) {
-    // TODO: implement signUp
-    return null;
+  Future<ResponseSignUp> signUp(RequestSignUp arg1) async{
+    return await _stub.client.signUp(arg1);
+  }
+
+  @override
+  Future<bool> hasToken() async {
+    return _kvs.client.getBool("HAS_TOKEN");;
+  }
+
+  @override
+  Future<bool> deleteToken() async {
+    final result = await _kvs.client.setString("TOKEN", "");
+    return result ? false : _kvs.client.setBool("HAS_TOKEN", false);
+  }
+
+  @override
+  Future<bool> persistToken(AccessToken arg1) async {
+    final result = await _kvs.client.setString("TOKEN", arg1.value);
+    return result ? false : _kvs.client.setBool("HAS_TOKEN", true);
   }
 }

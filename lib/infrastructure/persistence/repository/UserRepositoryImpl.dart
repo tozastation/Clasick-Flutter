@@ -21,18 +21,16 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<bool> hasToken() async {
-    return _kvs.client.getBool("HAS_TOKEN");;
+    return _kvs.getTokenIsExist();
   }
 
   @override
   Future<bool> deleteToken() async {
-    final result = await _kvs.client.setString("TOKEN", "");
-    return result ? false : _kvs.client.setBool("HAS_TOKEN", false);
+    return _kvs.getTokenIsExist();
   }
 
   @override
   Future<bool> persistToken(AccessToken arg1) async {
-    final result = await _kvs.client.setString("TOKEN", arg1.value);
-    return result ? false : _kvs.client.setBool("HAS_TOKEN", true);
+    return _kvs.setToken(arg1);
   }
 }

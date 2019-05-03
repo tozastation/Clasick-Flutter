@@ -1,6 +1,6 @@
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'package:clasick_flutter/domain/model/Login.dart';
 
 class KVSManager {
   // Create Singleton Object
@@ -22,8 +22,8 @@ class KVSManager {
     return client.getBool("HAS_TOKEN");
   }
 
-  Future<bool> setToken(AccessToken arg1) async {
-    final result = await client.setString("TOKEN", arg1.value);
+  Future<bool> setToken(AccessToken value) async {
+    final result = await client.setString("TOKEN", value.accessToken);
     return result ? false : client.setBool("HAS_TOKEN", true);
   }
 

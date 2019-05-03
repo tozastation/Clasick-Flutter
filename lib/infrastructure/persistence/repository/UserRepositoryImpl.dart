@@ -1,22 +1,32 @@
 import "package:clasick_flutter/domain/repository/UserRepository.dart";
-import "package:clasick_flutter/interface/grpc/user_rpc.pbgrpc.dart";
-import "package:clasick_flutter/interface/grpc/UserClient.dart";
-import "package:clasick_flutter/domain/model/Login.dart";
+import 'package:clasick_flutter/infrastructure/persistence/model/read/user/AccessToken.dart' as read;
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart' as write;
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/SignIn.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/SignUp.dart';
+import 'package:clasick_flutter/interface/api/UserAPI.dart';
 import "package:clasick_flutter/interface/kvs/KVSManager.dart";
+import 'package:clasick_flutter/infrastructure/persistence/model/read/user/User.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  UserClient _stub;
-  KVSManager _kvs;
-  UserRepositoryImpl(this._stub, this._kvs);
+  //UserClient _stub;
+  final KVSManager _kvs;
+  final IUserAPI _userAPI;
+  UserRepositoryImpl(this._kvs, this._userAPI);
 
   @override
-  Future<ResponseSignIn> signIn(RequestSignIn arg1) async {
-    return await _stub.client.signIn(arg1);
+  Future<User> getSingleUser(int userId) async {
+    // TODO: implement getSingleUser
+    return await _userAPI.getSingleUser(userId);
   }
 
   @override
-  Future<ResponseSignUp> signUp(RequestSignUp arg1) async{
-    return await _stub.client.signUp(arg1);
+  Future<read.AccessToken> signIn(SignIn value) async {
+    return await _userAPI.signIn(value);
+  }
+
+  @override
+  Future<read.AccessToken> signUp(SignUp value) async{
+    return await _userAPI.signUp(value);
   }
 
   @override
@@ -30,7 +40,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<bool> persistToken(AccessToken arg1) async {
+  Future<bool> persistToken(write.AccessToken arg1) async {
     return _kvs.setToken(arg1);
   }
 }

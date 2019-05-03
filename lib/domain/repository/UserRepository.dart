@@ -1,11 +1,15 @@
-import 'package:clasick_flutter/domain/model/Login.dart';
-import "package:clasick_flutter/interface/grpc/user_rpc.pb.dart";
+import 'package:clasick_flutter/infrastructure/persistence/model/read/user/AccessToken.dart' as read;
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart' as write;
+import 'package:clasick_flutter/infrastructure/persistence/model/read/user/User.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/SignIn.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/SignUp.dart';
 import 'dart:async';
 
 abstract class UserRepository {
-  Future<ResponseSignIn> signIn(RequestSignIn arg1);
-  Future<ResponseSignUp> signUp(RequestSignUp arg1);
+  Future<read.AccessToken> signIn(SignIn value);
+  Future<read.AccessToken> signUp(SignUp value);
+  Future<User> getSingleUser(int userId);
   Future<bool> hasToken();
   Future<bool> deleteToken();
-  Future<bool> persistToken(AccessToken arg1);
+  Future<bool> persistToken(write.AccessToken value);
 }

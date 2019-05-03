@@ -1,6 +1,7 @@
 import 'package:grpc/grpc.dart';
 import "package:clasick_flutter/interface/grpc/user_rpc.pbgrpc.dart";
 
+
 class UserClient {
   // Create Singleton Object
   static UserClient _instance;

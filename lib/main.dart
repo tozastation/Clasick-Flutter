@@ -1,12 +1,12 @@
 import 'package:clasick_flutter/infrastructure/persistence/repository/UserRepositoryImpl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:clasick_flutter/application/authentication/Authentication.dart';
+import 'package:clasick_flutter/application/module/Authentication.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clasick_flutter/domain/service/UserService.dart';
 import 'package:clasick_flutter/application/splash/Splash.dart';
-import 'package:clasick_flutter/application/login/Login.dart';
+import 'package:clasick_flutter/application/mod/Login.dart';
 import 'package:clasick_flutter/interface/kvs/KVSManager.dart';
 import 'package:clasick_flutter/interface/grpc/UserClient.dart';
 import 'package:clasick_flutter/application/common/LoginIndicator.dart';

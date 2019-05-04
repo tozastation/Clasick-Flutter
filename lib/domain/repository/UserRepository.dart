@@ -12,4 +12,5 @@ abstract class UserRepository {
   Future<bool> hasToken();
   Future<bool> deleteToken();
   Future<bool> persistToken(write.AccessToken value);
+  Future<read.AccessToken> getToken();
 }

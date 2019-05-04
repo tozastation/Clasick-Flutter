@@ -12,6 +12,7 @@ abstract class UserService {
   Future<bool> hasToken();
   Future<bool> deleteToken();
   Future<bool> persistToken(view.AccessToken arg1);
+  Future<read.AccessToken> getToken();
 }
 
 class UserServiceImpl implements UserService {
@@ -34,6 +35,12 @@ class UserServiceImpl implements UserService {
   @override
   Future<bool> deleteToken() async {
     return _userRepository.deleteToken();
+  }
+
+  @override
+  Future<read.AccessToken> getToken() async {
+    // TODO: implement getToken
+    return await _userRepository.getToken();
   }
 
   @override

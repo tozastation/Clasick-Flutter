@@ -5,11 +5,15 @@ import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Genr
 import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Music.dart';
 import 'dart:async';
 
+import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Playlist.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart';
+
 abstract class IMusicService {
   Future<List<Genre>> getAllGenre(int limitNum);
   Future<List<Album>> getAllAlbum(int limitNum);
   Future<List<Artist>> getAllArtist(int limitNum);
   Future<List<Music>> getAllMusic(int limitNum);
+  Future<List<Playlist>> getAllPlaylist(AccessToken accessToken);
 }
 
 class MusicServiceImpl implements IMusicService {
@@ -38,5 +42,11 @@ class MusicServiceImpl implements IMusicService {
   Future<List<Genre>> getAllGenre(int limitNum) async {
     // TODO: implement getAllGenre
     return await _musicRepository.getAllGenre(limitNum);
+  }
+  
+  @override
+  Future<List<Playlist>> getAllPlaylist(AccessToken accessToken) {
+    // TODO: implement getAllPlaylist
+    return _musicRepository.getAllMyPlaylist(accessToken);
   }
 }

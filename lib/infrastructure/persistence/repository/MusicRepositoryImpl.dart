@@ -4,6 +4,8 @@ import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Albu
 import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Artist.dart';
 import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Genre.dart';
 import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Music.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Playlist.dart';
 
 class MusicRepositoryImpl implements IMusicRepository {
   IMusicAPI _musicAPI;
@@ -31,5 +33,11 @@ class MusicRepositoryImpl implements IMusicRepository {
   Future<List<Genre>> getAllGenre(int limitNum) async {
     // TODO: implement getAllGenre
     return await _musicAPI.getAllGenre(limitNum);
+  }
+
+  @override
+  Future<List<Playlist>> getAllMyPlaylist(AccessToken accessToken) async {
+    // TODO: implement getAllMyPlaylist
+    return await _musicAPI.getAllMyPlaylist(accessToken);
   }
 }

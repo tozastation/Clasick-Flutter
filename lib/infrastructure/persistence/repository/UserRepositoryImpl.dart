@@ -43,4 +43,10 @@ class UserRepositoryImpl implements UserRepository {
   Future<bool> persistToken(write.AccessToken arg1) async {
     return _kvs.setToken(arg1);
   }
+
+  @override
+  Future<read.AccessToken> getToken() async {
+    // TODO: implement getToken
+    return await _kvs.getToken();
+  }
 }

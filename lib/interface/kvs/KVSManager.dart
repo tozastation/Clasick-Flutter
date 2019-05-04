@@ -1,4 +1,5 @@
-import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/read/user/AccessToken.dart' as read;
+import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart' as write;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
@@ -24,7 +25,7 @@ class KVSManager {
     return client.getBool("HAS_TOKEN");
   }
 
-  Future<bool> setToken(AccessToken value) async {
+  Future<bool> setToken(write.AccessToken value) async {
     final SharedPreferences client = await SharedPreferences.getInstance();
     print("REGISTER TOKEN" + value.accessToken);
     final result = await client.setString("TOKEN", value.accessToken);
@@ -36,6 +37,11 @@ class KVSManager {
     final SharedPreferences client = await SharedPreferences.getInstance();
     final result = await client.setString("TOKEN", "");
     return result ? await client.setBool("HAS_TOKEN", false) : false;
+  }
+
+  Future<read.AccessToken> getToken() async {
+    final SharedPreferences client = await SharedPreferences.getInstance();
+    return read.AccessToken(accessToken: client.getString("TOKEN"));
   }
 
   KVSManager._internal();

@@ -15,21 +15,27 @@ class KVSManager {
   }
 
   Future<bool> initTokenIsExist() async {
-    return client.setBool("HAS_TOKEN", false);
+    final SharedPreferences client = await SharedPreferences.getInstance();
+    return await client.setBool("HAS_TOKEN", false);
   }
 
   Future<bool> getTokenIsExist() async {
+    final SharedPreferences client = await SharedPreferences.getInstance();
     return client.getBool("HAS_TOKEN");
   }
 
   Future<bool> setToken(AccessToken value) async {
+    final SharedPreferences client = await SharedPreferences.getInstance();
+    print("REGISTER TOKEN" + value.accessToken);
     final result = await client.setString("TOKEN", value.accessToken);
-    return result ? false : client.setBool("HAS_TOKEN", true);
+    print("REGISTER TOKEN RESULT" + result.toString());
+    return result ? await client.setBool("HAS_TOKEN", true) : false;
   }
 
   Future<bool> deleteToken() async {
+    final SharedPreferences client = await SharedPreferences.getInstance();
     final result = await client.setString("TOKEN", "");
-    return result ? false : client.setBool("HAS_TOKEN", false);
+    return result ? await client.setBool("HAS_TOKEN", false) : false;
   }
 
   KVSManager._internal();

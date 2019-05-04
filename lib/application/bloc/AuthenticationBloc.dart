@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:clasick_flutter/domain/model/Login.dart';
+import 'package:clasick_flutter/application/viewmodel/AccessToken.dart' as view;
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:clasick_flutter/application/module/Authentication.dart';
@@ -21,7 +20,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ) async* {
     if (event is AppStarted) {
       final bool hasToken = await userService.hasToken();
-
+      print(hasToken);
       if (hasToken) {
         yield AuthenticationAuthenticated();
       } else {
@@ -31,7 +30,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      await userService.persistToken(AccessToken(event.token));
+      print(event.token);
+      final result = await userService.persistToken(view.AccessToken(event.token));
+      print(result);
       yield AuthenticationAuthenticated();
     }
 

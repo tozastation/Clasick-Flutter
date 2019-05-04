@@ -1,4 +1,6 @@
+import 'package:clasick_flutter/application/module/Home.dart';
 import 'package:clasick_flutter/infrastructure/persistence/repository/UserRepositoryImpl.dart';
+import 'package:clasick_flutter/interface/api/UserAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:clasick_flutter/application/module/Authentication.dart';
@@ -6,10 +8,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clasick_flutter/domain/service/UserService.dart';
 import 'package:clasick_flutter/application/splash/Splash.dart';
-import 'package:clasick_flutter/application/mod/Login.dart';
+import 'package:clasick_flutter/application/module/Login.dart';
 import 'package:clasick_flutter/interface/kvs/KVSManager.dart';
-import 'package:clasick_flutter/interface/grpc/UserClient.dart';
 import 'package:clasick_flutter/application/common/LoginIndicator.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -26,11 +28,10 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() async {
-  debugPaintSizeEnabled=true;
+  debugPaintSizeEnabled=false;
+  await DotEnv().load('.env');
   BlocSupervisor().delegate = SimpleBlocDelegate();
-  await KVSManager().initClient();
-  await KVSManager().initTokenIsExist();
-  final _userRepoImpl = UserRepositoryImpl(UserClient(), KVSManager());
+  final _userRepoImpl = UserRepositoryImpl(KVSManager(), UserAPI());
   runApp(MyApp(userService: UserServiceImpl(_userRepoImpl)));
 }
 
@@ -67,7 +68,7 @@ class _MyAppState extends State<MyApp> {
               return SplashPage();
             }
             if (state is AuthenticationAuthenticated) {
-              //return HomePage();
+              return HomeScreen();
             }
             if (state is AuthenticationUnauthenticated) {
               return LoginScreen(userService: _userService);

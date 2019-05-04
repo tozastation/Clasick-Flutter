@@ -1,3 +1,4 @@
+import 'package:clasick_flutter/application/viewmodel/AccessToken.dart' as view;
 import 'package:clasick_flutter/domain/model/Login.dart';
 import "package:clasick_flutter/domain/repository/UserRepository.dart";
 import 'package:clasick_flutter/infrastructure/persistence/model/write/user/SignIn.dart';
@@ -10,7 +11,7 @@ abstract class UserService {
   Future<read.AccessToken> signIn(LoginForm arg1);
   Future<bool> hasToken();
   Future<bool> deleteToken();
-  Future<bool> persistToken(write.AccessToken arg1);
+  Future<bool> persistToken(view.AccessToken arg1);
 }
 
 class UserServiceImpl implements UserService {
@@ -19,6 +20,7 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<read.AccessToken> signIn(LoginForm arg1) async {
+      print("Service Layer");
       final SignIn req = SignIn(name: arg1.userId.value, password: arg1.userPassword.value);
       final result = await _userRepository.signIn(req);
       return read.AccessToken(accessToken: result.accessToken);
@@ -35,8 +37,8 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<bool> persistToken(write.AccessToken arg1) async {
-    return _userRepository.persistToken(arg1);
+  Future<bool> persistToken(view.AccessToken accessToken) async {
+    return await _userRepository.persistToken(write.AccessToken(accessToken: accessToken.value));
   }
 
   RequestSignIn _mappedToSign(LoginForm arg1) {

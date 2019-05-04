@@ -23,16 +23,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressed) {
       yield LoginLoading();
-
       try {
-        final token = await userService.signIn(
-          LoginForm(
-              event.username,
-              event.password
-          )
-        );
-
-        authenticationBloc.dispatch(LoggedIn(token: token.value));
+        final token = await userService.signIn(LoginForm(UserID(event.password), UserPassword(event.password)));
+        print(token.accessToken);
+        authenticationBloc.dispatch(LoggedIn(token: token.accessToken));
         yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());

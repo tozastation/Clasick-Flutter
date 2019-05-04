@@ -46,7 +46,7 @@ class _LoginContainerState extends State<LoginContainer> {
           padding: const EdgeInsets.all(16.0),
           margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
           child: new Column(
-            mainAxisSize: MainAxisSize.min,
+            //mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),

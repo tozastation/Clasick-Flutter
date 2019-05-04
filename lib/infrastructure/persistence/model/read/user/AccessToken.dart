@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'package:clasick_flutter/infrastructure/persistence/model/read/user/AccessToken.g.dart';
+part 'AccessToken.g.dart';
 
 @JsonSerializable()
 class AccessToken {
+  @JsonKey(name: 'access_token')
   final String accessToken ;
 
   AccessToken({this.accessToken});

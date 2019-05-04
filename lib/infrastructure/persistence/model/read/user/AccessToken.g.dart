@@ -7,8 +7,8 @@ part of 'AccessToken.dart';
 // **************************************************************************
 
 AccessToken _$AccessTokenFromJson(Map<String, dynamic> json) {
-  return AccessToken(accessToken: json['accessToken'] as String);
+  return AccessToken(accessToken: json['access_token'] as String);
 }
 
 Map<String, dynamic> _$AccessTokenToJson(AccessToken instance) =>
-    <String, dynamic>{'accessToken': instance.accessToken};
+    <String, dynamic>{'access_token': instance.accessToken};

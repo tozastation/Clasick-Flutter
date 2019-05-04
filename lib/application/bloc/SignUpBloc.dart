@@ -25,14 +25,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       yield SignUpLoading();
 
       try {
-        final token = await userService.signIn(
-            LoginForm(
-                event.username,
-                event.password
-            )
-        );
-
-        authenticationBloc.dispatch(LoggedIn(token: token.value));
+        final token = await userService.signIn(LoginForm(UserID(event.username), UserPassword(event.password)));
+        authenticationBloc.dispatch(LoggedIn(token: token.accessToken));
         yield SignUpInitial();
       } catch (error) {
         yield SignUpFailure(error: error.toString());

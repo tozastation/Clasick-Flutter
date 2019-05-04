@@ -1,43 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:clasick_flutter/screens/home.dart';
-import 'package:clasick_flutter/screens/signup.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:clasick_flutter/application/module/Authentication.dart';
+import 'package:clasick_flutter/application/module/Login.dart';
 
-class Login extends StatefulWidget {
+class LoginContainer extends StatefulWidget {
+  final LoginBloc loginBloc;
+  final AuthenticationBloc authenticationBloc;
+
+  LoginContainer({
+    Key key,
+    @required this.loginBloc,
+    @required this.authenticationBloc,
+  }) : super(key: key);
+
   @override
-  _LoginState createState() => new _LoginState();
+  State<LoginContainer> createState() => _LoginContainerState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController userID = new TextEditingController();
-  TextEditingController userPass = new TextEditingController();
+class _LoginContainerState extends State<LoginContainer> {
+  final _usernameCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+
+  LoginBloc get _loginBloc => widget.loginBloc;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Clasick'),
-      ),
-      body: new Container(
+    return BlocBuilder<LoginEvent, LoginState>(
+      bloc: _loginBloc,
+      builder: (
+        BuildContext context,
+        LoginState state,
+      ) {
+        if (state is LoginFailure) {
+          _onWidgetDidBuild(() {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${state.error}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          });
+        }
+
+        return Container(
           padding: const EdgeInsets.all(16.0),
           margin: const EdgeInsets.fromLTRB(0, 100, 0, 0),
           child: new Column(
-            mainAxisSize: MainAxisSize.min,
+            //mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: new TextFormField(
-                  controller: userID,
+                  controller: _usernameCtrl,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
                           borderSide: new BorderSide(color: Colors.teal)),
-                      labelText: 'User ID',
+                      labelText: 'User Name',
                       hintText: 'Please enter a search term'),
                 ),
               ),
               new Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: new TextFormField(
-                  controller: userPass,
+                  controller: _passwordCtrl,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
                           borderSide: new BorderSide(color: Colors.teal)),
@@ -60,10 +85,8 @@ class _LoginState extends State<Login> {
                       ),
                       color: Colors.green,
                       shape: RoundedRectangleBorder(),
-                      onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Home()));
-                      },
+                      onPressed:
+                          state is! LoginLoading ? _onLoginButtonPressed : null,
                     ),
                   )),
               Container(
@@ -80,15 +103,32 @@ class _LoginState extends State<Login> {
                     ),
                     color: Colors.green,
                     shape: RoundedRectangleBorder(),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SignUp()));
-                    },
+                    onPressed:
+                        state is! LoginLoading ? _onLoginButtonPressed : null,
                   ),
                 ),
-              )
+              ),
+              Container(
+                child:
+                    state is LoginLoading ? CircularProgressIndicator() : null,
+              ),
             ],
-          )),
+          ),
+        );
+      },
     );
+  }
+
+  void _onWidgetDidBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callback();
+    });
+  }
+
+  _onLoginButtonPressed() {
+    _loginBloc.dispatch(LoginButtonPressed(
+      username: _usernameCtrl.text,
+      password: _passwordCtrl.text,
+    ));
   }
 }

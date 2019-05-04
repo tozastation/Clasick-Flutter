@@ -13,42 +13,47 @@ service UserRpc {
     };
 }
 
-// Result: レスポンスの結果
-enum Result {
-    SUCCESS = 0;
-    FAILED = 1;
-}
-
+/**
+ * rpc : SignIn
+ **/
 message RequestSignIn {
-    string user_name = 1;
+    string name = 1;
     string password = 2;
 }
-
 message ResponseSignIn {
     string access_token = 1;
-    Result result = 2;
 }
 
+message Contact {
+    string phone_num = 1;
+    string email = 2;
+}
+
+/**
+ * rpc : SignUp
+ **/
 message RequestSignUp {
-    string user_name = 1;
+    string name = 1;
     string password = 2;
-    Result result = 3;
+    Contact contact = 3;
 }
-
 message ResponseSignUp {
     string access_token = 1;
-    Result result = 2;
 }
 
 message ResponseUser {
     int32 user_id = 1;
     string user_name = 2;
+    string icon_path = 3;
+    string introduction = 4;
 }
+
+/**
+  * rpc :GetSingleUser
+  **/
 message RequestGetSingleUser {
     int32 user_id = 1;
 }
-
 message ResponseGetSingleUser {
     ResponseUser user = 1;
-    Result result = 2;
 }

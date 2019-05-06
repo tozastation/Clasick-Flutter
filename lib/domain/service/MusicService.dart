@@ -13,7 +13,7 @@ abstract class IMusicService {
   Future<List<Album>> getAllAlbum(int limitNum);
   Future<List<Artist>> getAllArtist(int limitNum);
   Future<List<Music>> getAllMusic(int limitNum);
-  Future<List<Playlist>> getAllPlaylist(AccessToken accessToken);
+  Future<List<Playlist>> getMyPlaylist(AccessToken accessToken);
 }
 
 class MusicServiceImpl implements IMusicService {
@@ -45,7 +45,7 @@ class MusicServiceImpl implements IMusicService {
   }
   
   @override
-  Future<List<Playlist>> getAllPlaylist(AccessToken accessToken) {
+  Future<List<Playlist>> getMyPlaylist(AccessToken accessToken) {
     // TODO: implement getAllPlaylist
     return _musicRepository.getAllMyPlaylist(accessToken);
   }

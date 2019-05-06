@@ -1,4 +1,5 @@
 import 'package:clasick_flutter/application/bloc/NavigationBloc.dart';
+import 'package:clasick_flutter/application/screen/PlaylistScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:clasick_flutter/screens/sample.dart';
 import 'package:clasick_flutter/screens/playlist.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedIndex = snapshot.data.index;
           switch (snapshot.data) {
             case Navigation.PLAYLIST:
-              return Playlist();
+              return PlaylistScreen();
             case Navigation.MY_MUSIC:
               return PlaceholderWidget(Colors.deepOrange);
             case Navigation.SEARCH:

@@ -22,7 +22,8 @@ class KVSManager {
 
   Future<bool> getTokenIsExist() async {
     final SharedPreferences client = await SharedPreferences.getInstance();
-    return client.getBool("HAS_TOKEN");
+    final result = client.getBool("HAS_TOKEN");
+    return result == null ? result : false;
   }
 
   Future<bool> setToken(write.AccessToken value) async {

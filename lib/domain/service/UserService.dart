@@ -34,7 +34,7 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<bool> deleteToken() async {
-    return _userRepository.deleteToken();
+    return await _userRepository.deleteToken();
   }
 
   @override

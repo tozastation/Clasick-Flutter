@@ -31,17 +31,17 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<bool> hasToken() async {
-    return _kvs.getTokenIsExist();
+    return await _kvs.getTokenIsExist();
   }
 
   @override
   Future<bool> deleteToken() async {
-    return _kvs.getTokenIsExist();
+    return await _kvs.getTokenIsExist();
   }
 
   @override
   Future<bool> persistToken(write.AccessToken arg1) async {
-    return _kvs.setToken(arg1);
+    return await _kvs.setToken(arg1);
   }
 
   @override

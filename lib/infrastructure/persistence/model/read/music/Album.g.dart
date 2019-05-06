@@ -10,13 +10,13 @@ Album _$AlbumFromJson(Map<String, dynamic> json) {
   return Album(
       id: json['id'] as int,
       name: json['name'] as String,
-      iconPath: json['iconPath'] as String,
-      artistName: json['artistName'] as String);
+      iconPath: json['icon_path'] as String,
+      artistName: json['artist_name'] as String);
 }
 
 Map<String, dynamic> _$AlbumToJson(Album instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'iconPath': instance.iconPath,
-      'artistName': instance.artistName
+      'icon_path': instance.iconPath,
+      'artist_name': instance.artistName
     };

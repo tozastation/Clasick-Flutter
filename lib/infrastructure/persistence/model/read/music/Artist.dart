@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'package:clasick_flutter/infrastructure/persistence/model/read/music/Artist.g.dart';
+part 'Artist.g.dart';
 
 @JsonSerializable()
 class Artist {
   final int id;
   final String name;
+  @JsonKey(name: 'icon_path')
   final String iconPath;
   final String description;
 

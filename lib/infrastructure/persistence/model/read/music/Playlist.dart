@@ -7,6 +7,7 @@ class Playlist {
   final int id;
   final String name;
   final String description;
+  @JsonKey(name: 'icon_path')
   final String iconPath;
 
   Playlist({this.id, this.name, this.description, this.iconPath});

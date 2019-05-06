@@ -20,7 +20,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ) async* {
     if (event is AppStarted) {
       final bool hasToken = await userService.hasToken();
-      print(hasToken);
+      print("確認");
       if (hasToken) {
         yield AuthenticationAuthenticated();
       } else {
@@ -30,7 +30,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      print(event.token);
       final result = await userService.persistToken(view.AccessToken(event.token));
       print(result);
       yield AuthenticationAuthenticated();

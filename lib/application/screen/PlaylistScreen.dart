@@ -1,5 +1,14 @@
+import 'package:clasick_flutter/domain/service/MusicService.dart';
+import 'package:clasick_flutter/domain/service/UserService.dart';
+import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Playlist.dart';
+import 'package:clasick_flutter/infrastructure/persistence/repository/MusicRepositoryImpl.dart';
+import 'package:clasick_flutter/infrastructure/persistence/repository/UserRepositoryImpl.dart';
+import 'package:clasick_flutter/interface/api/MusicAPI.dart';
+import 'package:clasick_flutter/interface/api/UserAPI.dart';
+import 'package:clasick_flutter/interface/kvs/KVSManager.dart';
 import 'package:flutter/material.dart';
 import 'package:clasick_flutter/screens/playlist_detail.dart';
+import 'package:clasick_flutter/application/bloc/PlaylistBloc.dart';
 
 class PlaylistScreen extends StatefulWidget {
   @override
@@ -8,54 +17,80 @@ class PlaylistScreen extends StatefulWidget {
   }
 }
 
-
 class _PlaylistScreenState extends State<PlaylistScreen> {
+  PlaylistBloc _playlistBloc;
 
-  var playlistTitle = [
-    "ジム", "カラオケ", "お気に入り", "一次選考"
-  ];
-
-  var playlistComment = [
-    "激しい系", "歌いたいリスト", "素直に好き", "好きになる可能性あり"
-  ];
-
-  var playlistIcon = [
-    "https://nenemame-trend.info/wp-content/uploads/2018/05/yjimage.jpg",
-    "https://pbs.twimg.com/profile_images/972392347454472192/iMMP8bCH_400x400.jpg",
-    "https://info.dk311.jp/wp-content/uploads/2017/12/%E3%81%99%E3%81%93%E3%81%B6%E3%82%8B%E5%8B%95%E3%81%8F%E3%82%A6%E3%82%B5%E3%82%AE3GIF.gif",
-    "http://dk311.jp/Extremely-Rabbit/cafe/img/common/usagi01.png"
-  ];
+  @override
+  void initState() {
+    super.initState();
+    final userService =
+        UserServiceImpl(UserRepositoryImpl(KVSManager(), UserAPI()));
+    final musicService = MusicServiceImpl(MusicRepositoryImpl(MusicAPI()));
+    _playlistBloc =
+        PlaylistBloc(userService: userService, musicService: musicService);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: Text('Playlist'),),
-      body: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.black38),
-                ),
+      body: StreamBuilder<List<Playlist>>(
+          stream: _playlistBloc.subject.stream,
+          builder: (context, AsyncSnapshot<List<Playlist>> snapshot) {
+            //var state = snapshot.data;
+            return new Scaffold(
+              body: new RefreshIndicator(
+                onRefresh: _playlistBloc.getPlaylist(),
+                child: new LayoutBuilder(builder:
+                    (BuildContext context, BoxConstraints boxConstraints) {
+                  if (snapshot.data.isEmpty || snapshot.data == null) {
+                    return new Center(
+                      child: new CircularProgressIndicator(
+                        backgroundColor: Colors.deepOrangeAccent,
+                        strokeWidth: 5.0,
+                      ),
+                    );
+                  } else {
+                    if (snapshot.data.length > 0) {
+                      return new ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            print("[DEBUG] snapshot");
+                            print(snapshot.data[index].iconPath);
+                            return Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.black38),
+                                  ),
+                                ),
+                                child: ListTile(
+                                  leading: new CircleAvatar(
+                                    backgroundImage: new NetworkImage(
+                                        snapshot.data[index].iconPath),
+                                  ),
+                                  title: Text(snapshot.data[index].name),
+                                  subtitle:
+                                      Text(snapshot.data[index].description),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PlaylistDetail(
+                                            snapshot.data[index].name),
+                                      ),
+                                    );
+                                  },
+                                ));
+                          });
+                    } else {
+                      return new Center(
+                        child: new Text("Empty data"),
+                      );
+                    }
+                  }
+                }),
               ),
-              child: ListTile(
-                leading: new CircleAvatar(
-                  backgroundImage: new NetworkImage(playlistIcon[index]),
-                ),
-                title: Text(playlistTitle[index]),
-                subtitle: Text(playlistComment[index]),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlaylistDetail(playlistTitle[index]),
-                    ),
-                  );
-                },
-              ));
-        },
-        itemCount: playlistTitle.length,
-      ),
+            );
+          }),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:clasick_flutter/infrastructure/persistence/model/write/user/Acce
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:clasick_flutter/infrastructure/persistence/model/read/music/Genre.dart';
+import "dart:convert" show utf8;
 
 abstract class IMusicAPI {
   Future<List<Genre>> getAllGenre(int limitNum);
@@ -66,11 +67,12 @@ class MusicAPI implements IMusicAPI {
   @override
   Future<List<Playlist>> getAllMyPlaylist(AccessToken accessToken) async {
     // TODO: implement getAllMyPlaylist
+    print(rootURL + DotEnv().env['PLAYLIST']);
     final response = await http.get(
-      rootURL + DotEnv().env['MyPlaylist'],
+      rootURL + DotEnv().env['PLAYLIST'],
       headers: {HttpHeaders.authorizationHeader: "Basic " + accessToken.accessToken},
     );
-    Iterable list = json.decode(response.body);
+    Iterable list = await json.decode(utf8.decode(response.bodyBytes));
     List<Playlist> playlists = list.map((i) => Playlist.fromJson(i)).toList();
     return playlists;
   }

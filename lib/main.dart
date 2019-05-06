@@ -27,7 +27,7 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-void main() async {
+Future main() async {
   debugPaintSizeEnabled=false;
   await DotEnv().load('.env');
   BlocSupervisor().delegate = SimpleBlocDelegate();

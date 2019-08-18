@@ -17,8 +17,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    this._bloc = HomeBloc();
     super.initState();
+    this._bloc = HomeBloc();
   }
 
   @override
@@ -30,25 +30,23 @@ class _HomePageState extends State<HomePage> {
       ),
       body: StreamBuilder<NavBarItem>(
         stream: this._bloc.itemStream,
-        initialData: this._bloc.defaultItem,
         // ignore: missing_return
         builder: (BuildContext context, AsyncSnapshot<NavBarItem> snapshot) {
+          if(snapshot.data == null) return Center(child:CircularProgressIndicator());
           switch (snapshot.data) {
             case NavBarItem.Playlist:
               return PlaylistPage();
             case NavBarItem.MyMusic:
-              return null;
+              return Container(width: 0.0, height: 0.0);
             case NavBarItem.Search:
-              return null;
+              return Container(width: 0.0, height: 0.0);
           }
         },
       ),
       bottomNavigationBar: StreamBuilder(
         stream: this._bloc.itemStream,
-        initialData: this._bloc.defaultItem,
-        // ignore: missing_return
         builder: (BuildContext context, AsyncSnapshot<NavBarItem> snapshot) {
-          BottomNavigationBar(
+          return BottomNavigationBar(
             onTap: this._bloc.pickItem,
             currentIndex: snapshot.data.index,
             items: [

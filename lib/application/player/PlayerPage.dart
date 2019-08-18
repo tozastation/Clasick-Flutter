@@ -3,22 +3,21 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 
 // ignore: must_be_immutable
-class Play extends StatefulWidget {
+class PlayerPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _Play();
+    return _PlayerPageState();
   }
 
   String title;
   String artist;
-
-  Play(String title, String artist) {
+  PlayerPage(String title, String artist) {
     this.title = title;
     this.artist = artist;
   }
 }
 
-class _Play extends State<Play> {
+class _PlayerPageState extends State<PlayerPage> {
   AudioPlayer audioPlayer = new AudioPlayer();
   String _url = "https://storage.googleapis.com/clasick/1/canon-index.m3u8";
 
@@ -59,7 +58,7 @@ class _Play extends State<Play> {
 
   void initPlayer(){
     audioPlayer.onDurationChanged.listen(
-        (value) {
+            (value) {
           setState(() {
             _duration = value;
           });
@@ -96,24 +95,24 @@ class _Play extends State<Play> {
       body: Center(
           child: Column(
               children: <Widget>[
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-              child: SizedBox(
-                width: 300.0,
-                height: 300.0,
-                child: Image.network(
-                    'http://harucla.cocolog-nifty.com/photos/uncategorized/2012/05/14/img_143402_8722050_3_2.jpg'),
-              ),
-            ),
-            Container(child: Slider(
-                value: _position.inMilliseconds.toDouble(),
-                min: 0.0,
-                max: _duration.inMilliseconds.toDouble(),
-                onChanged: null,
-            )),
-            Row(children: <Widget>[
-              Expanded(
-                  child: Container(
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child: SizedBox(
+                    width: 300.0,
+                    height: 300.0,
+                    child: Image.network(
+                        'http://harucla.cocolog-nifty.com/photos/uncategorized/2012/05/14/img_143402_8722050_3_2.jpg'),
+                  ),
+                ),
+                Container(child: Slider(
+                  value: _position.inMilliseconds.toDouble(),
+                  min: 0.0,
+                  max: _duration.inMilliseconds.toDouble(),
+                  onChanged: null,
+                )),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: Container(
                       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0.0),
                       child: Text(
                         milliToText( _position.inMilliseconds.toDouble()),
@@ -122,43 +121,43 @@ class _Play extends State<Play> {
                           color: Colors.black,
                         ),
                       ),
+                    ),
                   ),
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0.0),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0.0),
+                      child: Text(
+                        milliToText(_duration.inMilliseconds.toDouble()),
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: Text(
-                    milliToText(_duration.inMilliseconds.toDouble()),
+                    widget.title,
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 20.0,
                       color: Colors.black,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ),
-            ]),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: Text(
-                widget.title,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: Text(
+                    widget.artist,
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: Text(
-                widget.artist,
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ])),
+              ])),
       floatingActionButton: Row(children: <Widget>[
         Expanded(
             child: Container(

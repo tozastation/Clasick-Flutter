@@ -19,18 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  protobuf: ^0.13.6
-  grpc: ^1.0.1
-  equatable: ^0.1.0
   audioplayers: ^0.10.1
   shared_preferences: ^0.5.2
   http: ^0.12.0+2
-  cupertino_icons: ^0.1.2
   json_annotation: ^2.0.0
   flutter_dotenv: ^2.0.1
   rxdart: ^0.21.0
-  bloc: ^0.12.0
-  flutter_bloc: ^0.12.0
+  bloc_provider: ^0.6.2+1
+  meta: ^1.1.6
 
 dev_dependencies:
   build_runner: ^1.0.0

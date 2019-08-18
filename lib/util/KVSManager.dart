@@ -1,49 +1,61 @@
-import 'package:clasick_flutter/infrastructure/persistence/model/read/user/AccessToken.dart' as read;
-import 'package:clasick_flutter/infrastructure/persistence/model/write/user/AccessToken.dart' as write;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-class KVSManager {
-  // Create Singleton Object
-  static KVSManager _instance;
-  SharedPreferences client;
-  factory KVSManager() {
-    if (_instance == null) _instance = new KVSManager._internal();
+// Static KVS Keys
+class KVSKeys {
+  static const String ALREADY_LOGIN = "ALREADY_LOGIN";
+  static const String ACCESS_TOKEN = "ACCESS_TOKEN";
+}
+
+abstract class KVSManager {
+  Future<void> initSharedPreference() ;
+  Future<bool> getLoginState();
+  Future<bool> setToken(String accessToken);
+  Future<bool> deleteToken();
+  Future<String> getToken();
+}
+
+class KVSManagerImpl implements KVSManager{
+  static KVSManagerImpl _instance;
+  SharedPreferences _client;
+
+  factory KVSManagerImpl() {
+    if (_instance == null) _instance = new KVSManagerImpl._internal();
     return _instance;
   }
-  Future<void> initClient() async {
-    this.client = await SharedPreferences.getInstance();
+
+  @override
+  Future<void> initSharedPreference() async {
+    this._client = await SharedPreferences.getInstance();
+    final bool result = await this._client.setBool(KVSKeys.ALREADY_LOGIN, false);
+    if (result == false){
+      throw new Error();
+    }
   }
 
-  Future<bool> initTokenIsExist() async {
-    final SharedPreferences client = await SharedPreferences.getInstance();
-    return await client.setBool("HAS_TOKEN", false);
-  }
-
-  Future<bool> getTokenIsExist() async {
-    final SharedPreferences client = await SharedPreferences.getInstance();
-    final result = client.getBool("HAS_TOKEN");
+  @override
+  Future<bool> getLoginState() async {
+    final result = this._client.getBool("HAS_TOKEN");
     return result == null ? result : false;
   }
 
-  Future<bool> setToken(write.AccessToken value) async {
-    final SharedPreferences client = await SharedPreferences.getInstance();
-    print("REGISTER TOKEN" + value.accessToken);
-    final result = await client.setString("TOKEN", value.accessToken);
-    print("REGISTER TOKEN RESULT" + result.toString());
-    return result ? await client.setBool("HAS_TOKEN", true) : false;
+  @override
+  Future<bool> setToken(String accessToken) async {
+    final result = await this._client.setString(KVSKeys.ACCESS_TOKEN, accessToken);
+    return result ? await this._client.setBool(KVSKeys.ALREADY_LOGIN, true) : false;
   }
 
+  @override
   Future<bool> deleteToken() async {
     final SharedPreferences client = await SharedPreferences.getInstance();
-    final result = await client.setString("TOKEN", "");
-    return result ? await client.setBool("HAS_TOKEN", false) : false;
+    final result = await client.setString(KVSKeys.ACCESS_TOKEN, null);
+    return result ? await client.setBool(KVSKeys.ALREADY_LOGIN, false) : false;
   }
 
-  Future<read.AccessToken> getToken() async {
-    final SharedPreferences client = await SharedPreferences.getInstance();
-    return read.AccessToken(accessToken: client.getString("TOKEN"));
+  @override
+  Future<String> getToken() async {
+    return this._client.getString("TOKEN");
   }
 
-  KVSManager._internal();
+  KVSManagerImpl._internal();
 }

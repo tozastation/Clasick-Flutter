@@ -1,80 +1,55 @@
-import 'package:clasick_flutter/application/module/Home.dart';
-import 'package:clasick_flutter/infrastructure/persistence/repository/UserRepositoryImpl.dart';
-import 'package:clasick_flutter/interface/api/UserAPI.dart';
+import 'package:bloc_provider/bloc_provider.dart';
+import 'package:clasick_flutter/application/home/HomePage.dart';
+import 'package:clasick_flutter/application/login/LoginBloc.dart';
+import 'package:clasick_flutter/domain/service/LoginServiceImpl.dart';
+import 'package:clasick_flutter/domain/service/interfaces/LoginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:clasick_flutter/application/module/Authentication.dart';
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clasick_flutter/domain/service/UserService.dart';
-import 'package:clasick_flutter/application/splash/Splash.dart';
-import 'package:clasick_flutter/application/module/Login.dart';
-import 'package:clasick_flutter/interface/kvs/KVSManager.dart';
-import 'package:clasick_flutter/application/common/LoginIndicator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class SimpleBlocDelegate extends BlocDelegate {
-  @override
-  void onTransition(Transition transition) {
-    super.onTransition(transition);
-    print(transition);
-  }
-
-  @override
-  void onError(Object error, StackTrace stacktrace) {
-    super.onError(error, stacktrace);
-    print(error);
-  }
-}
+import 'application/playlist/PlaylistProvider.dart';
 
 Future main() async {
-  debugPaintSizeEnabled=false;
+  debugPaintSizeEnabled = false;
   await DotEnv().load('.env');
-  BlocSupervisor().delegate = SimpleBlocDelegate();
-  final _userRepoImpl = UserRepositoryImpl(KVSManager(), UserAPI());
-  runApp(MyApp(userService: UserServiceImpl(_userRepoImpl)));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final UserService userService;
-  MyApp({Key key, @required this.userService}) : super(key: key);
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  AuthenticationBloc _authenticationBloc;
-  UserServiceImpl get _userService => widget.userService;
+  LoginBloc _loginBloc;
 
   @override
   void initState() {
-    _authenticationBloc = AuthenticationBloc(userService: _userService);
-    _authenticationBloc.dispatch(AppStarted());
+    LoginService loginService = LoginServiceImpl();
+    _loginBloc = LoginBloc(loginService);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthenticationBloc>(
-      bloc: _authenticationBloc,
+    return BlocProviderTree(
+      blocProviders: [PlaylistProvider()],
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
-          bloc: _authenticationBloc,
-          builder: (BuildContext context, AuthenticationState state) {
-            if (state is AuthenticationUninitialized) {
-              return SplashPage();
-            }
-            if (state is AuthenticationAuthenticated) {
-              return HomeScreen();
-            }
-            if (state is AuthenticationUnauthenticated) {
-              return LoginScreen(userService: _userService);
-            }
-            if (state is AuthenticationLoading) {
-              return LoadingIndicator();
+        home: StreamBuilder<LoginState>(
+          stream: _loginBloc.loginStream,
+          initialData: LoginState.Already,
+          // ignore: missing_return
+          builder: (BuildContext context, AsyncSnapshot<LoginState> snapshot) {
+            switch (snapshot.data) {
+              case LoginState.Already:
+                return HomePage();
+              case LoginState.NotReady:
+                return Container();
+              case LoginState.NetworkError:
+                return Container();
             }
           },
         ),

@@ -25,14 +25,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Clasick'),
-      ),
       body: StreamBuilder<NavBarItem>(
         stream: this._bloc.itemStream,
         // ignore: missing_return
         builder: (BuildContext context, AsyncSnapshot<NavBarItem> snapshot) {
-          if(snapshot.data == null) return Center(child:CircularProgressIndicator());
+          if (snapshot.data == null)
+            return Center(child: CircularProgressIndicator());
           switch (snapshot.data) {
             case NavBarItem.Playlist:
               return PlaylistPage();

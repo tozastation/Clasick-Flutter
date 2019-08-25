@@ -12,6 +12,7 @@ class PlaylistPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Playlist'),
+        backgroundColor: Color(0xFFFABBAD),
       ),
       body: RefreshIndicator(
         child: StreamBuilder<List<Playlist>>(

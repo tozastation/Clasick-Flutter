@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       blocProviders: [PlaylistProvider()],
       child: MaterialApp(
         theme: ThemeData(
-          primarySwatch: Colors.pink,
+          primarySwatch: Colors.blueGrey,
         ),
         home: StreamBuilder<LoginState>(
           stream: _loginBloc.loginStream,

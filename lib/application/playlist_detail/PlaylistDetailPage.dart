@@ -1,3 +1,4 @@
+import 'package:clasick_flutter/application/player/PlayerPage.dart';
 import 'package:clasick_flutter/application/playlist_detail/PlaylistDetailBloc.dart';
 import 'package:clasick_flutter/domain/model/Music.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,10 @@ class _PlaylistDetailPage extends State<PlaylistDetailPage> {
   Widget build(BuildContext context) {
     PlaylistDetailBloc _playlistDetail = PlaylistDetailBloc(widget.playlistID);
     return Scaffold(
+      backgroundColor: Color(0xFFecd6c7),
       appBar: AppBar(
         title: Text(widget.playlistName),
+        backgroundColor: Color(0xFFe79686),
       ),
       body: RefreshIndicator(
         child: StreamBuilder<List<Music>>(
@@ -42,15 +45,27 @@ class _PlaylistDetailPage extends State<PlaylistDetailPage> {
                         ),
                       ),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              snapshot.data[index].iconPath ?? "Null Value"),
-                        ),
-                        title: Text(snapshot.data[index].title ?? "Null Value"),
-                        subtitle: Text(
-                            snapshot.data[index].artistName ?? "Null Value"),
-                        onTap: () {},
-                      ));
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                snapshot.data[index].iconPath ?? "Null Value"),
+                          ),
+                          title:
+                              Text(snapshot.data[index].title ?? "Null Value"),
+                          subtitle: Text(
+                              snapshot.data[index].artistName ?? "Null Value"),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PlayerPage(
+                                    snapshot.data[index].title ?? "Unknown",
+                                    snapshot.data[index].artistName ??
+                                        "Unknown",
+                                    snapshot.data[index].musicPath ?? "Unknown",
+                                    snapshot.data[index].iconPath ?? "Unknown"),
+                              ),
+                            );
+                          }));
                 },
               );
           },

@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
         stream: this._bloc.itemStream,
         builder: (BuildContext context, AsyncSnapshot<NavBarItem> snapshot) {
           return BottomNavigationBar(
+            backgroundColor: Color(0xFFe79686),
             onTap: this._bloc.pickItem,
             currentIndex: snapshot.data.index,
             items: [

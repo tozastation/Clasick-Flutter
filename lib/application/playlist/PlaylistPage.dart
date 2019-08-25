@@ -10,9 +10,13 @@ class PlaylistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFecd6c7),
       appBar: AppBar(
-        title: const Text('Playlist'),
-        backgroundColor: Color(0xFFFABBAD),
+        title: const Text(
+          'Playlist',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFFe79686),
       ),
       body: RefreshIndicator(
         child: StreamBuilder<List<Playlist>>(

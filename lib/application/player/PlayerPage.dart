@@ -60,7 +60,8 @@ class _PlayerPageState extends State<PlayerPage> {
               url:
                   "https://storage.googleapis.com/clasick/music/1/ori_canon_in_d.mp3",
               artistName: widget.artist,
-              musicName: widget.title),
+              musicName: widget.title,
+              imagePath: widget.iconPath),
         ));
   }
 }

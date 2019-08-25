@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 enum PlayerState { stopped, playing, paused }
 
 class PlayerWidget extends StatefulWidget {
-  final String url, artistName, musicName;
+  final String url, artistName, musicName, imagePath;
   final bool isLocal;
   final PlayerMode mode;
 
@@ -15,17 +15,19 @@ class PlayerWidget extends StatefulWidget {
       {@required this.url,
       @required this.artistName,
       @required this.musicName,
+      @required this.imagePath,
       this.isLocal = false,
       this.mode = PlayerMode.MEDIA_PLAYER});
 
   @override
   State<StatefulWidget> createState() {
-    return new _PlayerWidgetState(url, artistName, musicName, isLocal, mode);
+    return new _PlayerWidgetState(
+        url, artistName, musicName, imagePath, isLocal, mode);
   }
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  String url, artistName, musicName;
+  String url, artistName, musicName, imagePath;
   bool isLocal;
   PlayerMode mode;
 
@@ -46,8 +48,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   get _durationText => _duration?.toString()?.split('.')?.first ?? '';
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
 
-  _PlayerWidgetState(
-      this.url, this.artistName, this.musicName, this.isLocal, this.mode);
+  _PlayerWidgetState(this.url, this.artistName, this.musicName, this.imagePath,
+      this.isLocal, this.mode);
 
   @override
   void initState() {
@@ -79,9 +81,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Image.network(
-                  'https://www.cdjournal.com/image/jacket/large/411707/4117071794.jpg',
-                  fit: BoxFit.fill),
+              child: Image.network(this.imagePath, fit: BoxFit.fill),
             ),
           ),
         ),

@@ -13,7 +13,8 @@ Music _$MusicFromJson(Map<String, dynamic> json) {
       json['icon_path'] as String,
       json['artist_name'] as String,
       json['description'] as String,
-      json['music_path'] as String);
+      json['music_path'] as String,
+      json['genre'] as String);
 }
 
 Map<String, dynamic> _$MusicToJson(Music instance) => <String, dynamic>{
@@ -22,5 +23,6 @@ Map<String, dynamic> _$MusicToJson(Music instance) => <String, dynamic>{
       'icon_path': instance.iconPath,
       'artist_name': instance.artistName,
       'description': instance.description,
-      'music_path': instance.musicPath
+      'music_path': instance.musicPath,
+      'genre': instance.genre
     };

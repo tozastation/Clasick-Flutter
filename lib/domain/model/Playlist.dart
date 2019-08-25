@@ -8,7 +8,7 @@ class Playlist {
   @JsonKey(name: 'id', nullable: false)
   final int id;
 
-  @JsonKey(name: 'title', nullable: false)
+  @JsonKey(name: 'name', nullable: false)
   final String title;
 
   @JsonKey(name: 'icon_path', nullable: false)
@@ -19,6 +19,7 @@ class Playlist {
 
   Playlist(this.id, this.title, this.iconPath, this.description);
 
-  factory Playlist.fromJson(Map<String, dynamic> json) => _$PlaylistFromJson(json);
+  factory Playlist.fromJson(Map<String, dynamic> json) =>
+      _$PlaylistFromJson(json);
   Map<String, dynamic> toJson() => _$PlaylistToJson(this);
 }

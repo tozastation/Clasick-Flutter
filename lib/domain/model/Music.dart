@@ -22,7 +22,12 @@ class Music {
 
   @JsonKey(name: 'music_path', nullable: false)
   final String musicPath;
-  Music(this.id, this.title, this.iconPath, this.artistName, this.description, this.musicPath);
+
+  @JsonKey(name: 'genre', nullable: false)
+  final String genre;
+
+  Music(this.id, this.title, this.iconPath, this.artistName, this.description,
+      this.musicPath, this.genre);
 
   factory Music.fromJson(Map<String, dynamic> json) => _$MusicFromJson(json);
   Map<String, dynamic> toJson() => _$MusicToJson(this);
